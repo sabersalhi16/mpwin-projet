@@ -10,6 +10,7 @@ export default class Server {
     this.initControllers(contollers);
   }
   initMiddleWares() {
+    console.log("POSTGRES_HOST", process.env.POSTGRES_HOST);
     this.app.use(express.urlencoded());
     this.app.use(express.json());
   }
