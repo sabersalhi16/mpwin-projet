@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import mongoose from "mongoose";
 import { Controller } from "./interfaces/controller.interface";
 export default class Server {
   public app: Application;
@@ -8,9 +9,10 @@ export default class Server {
     this.port = port;
     this.initMiddleWares();
     this.initControllers(contollers);
+
+    // this.connectToServer();
   }
   initMiddleWares() {
-    console.log("POSTGRES_HOST", process.env.POSTGRES_HOST);
     this.app.use(express.urlencoded());
     this.app.use(express.json());
   }
@@ -23,6 +25,14 @@ export default class Server {
   createServer() {
     this.app.listen(this.port, () => {
       console.log(` app listen at port ${this.port}`);
+      console.log("process.env.", process.env.POSTGRES_DB);
     });
   }
+
+  // connectToServer() {
+  //   mongoose.connect(`mongodb://${process.env.MONGO_URI}`, {
+  //     useNewUrlParser: true,
+  //     useUnifiedTopology: true,
+  //   });
+  // }
 }

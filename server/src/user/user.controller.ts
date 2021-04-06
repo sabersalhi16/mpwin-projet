@@ -1,52 +1,46 @@
-import { User, RequestWithParams } from "./user.interface";
+import { User, RequestWithParams, ResponseWithParams } from "./user.interface";
+import UserEntity from "./user.entity";
+import UserDto from "./user.dto";
 import express, { Request, Response } from "express";
-import { Controller } from "../interfaces/controller.interface";
-class UserController implements Controller {
+import AuthorityEntity from "../authorities/authoritie.entity";
+import HttpException from "../exceptions/HttpException";
+import { getRepository } from "typeorm";
+class UserController implements User {
   public path: string = "/users";
   public router = express.Router();
-  private users: User[] = [
-    {
-      id: 9403,
-      login: "saber",
-      firstName: null,
-      lastName: null,
-      name: "",
-      email: "kchdschacak@gmail.com",
-      imageUrl: null,
-      activated: true,
-      langKey: "fr",
-      createdBy: "superadmin",
-      createdDate: "2020-01-11T14:09:59.296311Z",
-      authorities: "ROLE_EDITOR",
-      photoDocumentId: 122,
-      couvertureDocumentId: null,
-    },
-  ];
+  private userRepository = getRepository(UserEntity);
   constructor() {
     this.initRoutes();
+    this.path = "/testusers";
   }
 
   public initRoutes() {
-    this.router.get(this.path, this.getAll.bind(this));
-    this.router.post(this.path, this.addNew.bind(this));
-    this.router.get(this.path + "/:id", this.getById.bind(this));
+    this.router.get(this.path, this.getAllUsers.bind(this));
+    this.router.post(this.path, this.addNewUser.bind(this));
+    this.router.get(this.path + "/:id", this.getUserById.bind(this));
   }
-  public getAll(req: Request, res: Response): void {
-    res.send(this.users);
+  public async getAllUsers(
+    req: RequestWithParams,
+    res: ResponseWithParams
+  ): Promise<void> {
+    try {
+      res.send();
+    } catch (e) {}
   }
 
-  public addNew(req: Request, res: Response) {
-    const user: User = req.body;
-    this.users.push(user);
-    res.send(user);
+  public async addNewUser(
+    req: RequestWithParams,
+    res: ResponseWithParams
+  ): Promise<void> {
+    const userData = req.body;
+    const newUser = await this.userRepository.create(userData);
+    try {
+      await this.userRepository.save(newUser);
+      res.send();
+    } catch (e) {}
   }
 
-  public async getById(req: RequestWithParams, res: Response) {
-    const users: User[] = await this.users;
-    const { id } = await req.params;
-    const response = await users.find((item) => item.id == id);
-    res.send(response);
-  }
+  public async getUserById(req: RequestWithParams, res: Response) {}
 }
 
 export default UserController;

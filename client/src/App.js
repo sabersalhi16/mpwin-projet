@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+// React is loaded and is available as React and ReactDOM
+// imports should NOT be used
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = { activeIndex: true };
+  onClick() {
+    this.setState({ activeIndex: !this.state.activeIndex });
+  }
+  render() {
+    console.log(this.state.activeIndex);
+
+    return (
+      <div onClick={this.onClick.bind(this)}>
+        {this.state.activeIndex ? "Test" : null}
+      </div>
+    );
+  }
 }
-
 export default App;

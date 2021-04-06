@@ -1,22 +1,19 @@
 import { Request } from "express";
+import { Controller } from "../interfaces/controller.interface";
 
-interface User {
-  id: number;
-  login: string;
-  firstName: string;
-  lastName: string;
-  name: string;
-  email: string;
-  imageUrl: string;
-  activated: boolean;
-  langKey: string;
-  createdBy: string;
-  createdDate: string;
-  authorities: string;
-  photoDocumentId: number;
-  couvertureDocumentId: number;
+interface User extends Controller {
+  getAllUsers(req: RequestWithParams, res: ResponseWithParams): Promise<void>;
+  addNewUser: (
+    req: RequestWithParams,
+    res: ResponseWithParams
+  ) => Promise<void>;
 }
 interface RequestWithParams extends Request {
   params: { [key: string]: string | number | any };
 }
-export { User, RequestWithParams };
+
+interface ResponseWithParams extends Response {
+  send();
+}
+
+export { User, RequestWithParams, ResponseWithParams };

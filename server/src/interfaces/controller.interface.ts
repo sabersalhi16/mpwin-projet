@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 interface Controller {
   path: string;
   port?: number;
-  initRoutes(): void;
-  getAll(req: Request, res: Response): void;
 }
 
 export { Controller };
